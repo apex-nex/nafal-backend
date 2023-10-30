@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 let DBconnection = async () => {
     try {
-         mongoose.connect(`mongodb+srv://mdadnanmdyaseen:Zm2wven8WA8pGZkL@cluster0.mru3jac.mongodb.net/nanded`).then(()=>{
+         mongoose.connect(`mongodb+srv://aranas0876:ymMl9Tss3PDCXLeq@cluster0.ur0okts.mongodb.net/?retryWrites=true&w=majority/nafal`).then(()=>{
             console.log('db connection')
         })
         
