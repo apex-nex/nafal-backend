@@ -1,0 +1,23 @@
+{
+  "name": "nafal-hvac",
+  "version": "1.0.0",
+  "description": "Nafal is the top rated HVAC contractors in Saudi Arabia providing end to end solution with heating ventilation and air conditioning.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hvac",
+    "hvac",
+    "provider",
+    "hvac",
+    "saudi",
+    "arabia",
+    "heating",
+    "ventilation",
+    "air",
+    "condition"
+  ],
+  "author": "apex company",
+  "license": "ISC"
+}
