@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Nafal is the top rated HVAC contractors in Saudi Arabia providing end to end solution with heating ventilation and air conditioning.",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
   },
   "keywords": [
     "hvac",
@@ -19,5 +21,11 @@
     "condition"
   ],
   "author": "apex company",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.6.3",
+    "nodemon": "^3.0.1"
+  }
 }
