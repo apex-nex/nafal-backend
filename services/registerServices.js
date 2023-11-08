@@ -1,4 +1,4 @@
-import userModel from "../models/loginModel.js"
+import userModel from "../src/models/loginModel.js"
 
 const createUser = async (name, email, mobile, password) => {
     const user = new userModel({ name: name, email: email, mobile: mobile, password: password })
