@@ -20,7 +20,7 @@ app.use('/admin', routerRegister)
 // middleware for login admin
 app.use('/admin', routerLogin)
 
-// middleware for login admin
+// middleware for contact form
 app.use('/', routerCustomer)
 
 app.use(express.urlencoded({ extended: false }))
