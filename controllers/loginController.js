@@ -15,10 +15,10 @@ const loginUser = async (req, res) => {
 
     if (user.length > 0) {
         let validateUser = await bcrypt.compare(password, user[0].password)
-        if (validateUser === true) {
-            res.render("dashboard", {
+        if (validateUser) {
+            res.send({
                 name: user[0].name,
-                message: 'Your Registration Is Successful'
+                message: 'Login Successful'
             })
         } else {
             res.send('wrong email or password')
