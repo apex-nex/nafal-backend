@@ -1,9 +1,10 @@
 import express from "express"
 import dotenv from 'dotenv'
 import routerLogin from "./routes/loginRouter.js"
-import connectDB from "./db/connect.js";
+import connectDB from "./src/db/connect.js";
 import routerRegister from "./routes/registerRouter.js";
 import cors from 'cors'
+import routerCustomer from "./routes/customerRouter.js";
 
 dotenv.config();
 const app = express()
@@ -18,6 +19,9 @@ app.use('/admin', routerRegister)
 
 // middleware for login admin
 app.use('/admin', routerLogin)
+
+// middleware for login admin
+app.use('/', routerCustomer)
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
