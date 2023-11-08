@@ -12,7 +12,7 @@ let registerUser = async (req, res) => {
         let status = await createUser(name, email, mobile, hash)
 
         if (password == repassword) {
-            if (status == 'success') {
+            if (status === 'success') {
                 res.send({
                     name: name,
                     message: 'Your Registration Is Successful'
