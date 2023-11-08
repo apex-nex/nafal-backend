@@ -1,13 +1,17 @@
 import { customersData } from "../services/customerFormServices.js";
 
 const customerForm = async (req, res) => {
-  const customerData = req.body;
-  const { name, email, mobile, subject, comments } = customerData;
-  console.log("customerData", customerData);
+  const { name, email, mobile, subject, comments } = req.body; 
+  console.log("customerData", req.body);
 
-  await customersData(name, email, mobile, subject, comments);
+  const status = await customersData(name, email, mobile, subject, comments);
 
-  res.send("Record Added Successfully!");
+  if (status === "Success") {
+    res.send("Record Added Successfully!");
+  } else {
+    res.send("Error occur during post contact form!");
+  }
+  
 };
 
 export { customerForm };
