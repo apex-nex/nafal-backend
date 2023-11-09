@@ -4,6 +4,9 @@
   "description": "Nafal is the top rated HVAC contractors in Saudi Arabia providing end to end solution with heating ventilation and air conditioning.",
   "main": "server.js",
   "type": "module",
+  "engines" : {
+   "node" :  ">=14.20.1"
+},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js"
