@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const customerSchema = mongoose.Schema({
+const formSchema = mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: false },
   mobile: { type: Number, required: true },
@@ -8,6 +8,6 @@ const customerSchema = mongoose.Schema({
   comments: { type: String, required: true },
 });
 
-const customerModel = new mongoose.model("customer", customerSchema, "customer");
+const formModel = new mongoose.model("form", formSchema);
 
-export default customerModel;
+export default formModel;
