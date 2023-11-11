@@ -10,6 +10,6 @@ routerForm.get('/form', form)
 
 routerForm.post('/form', formSubmit)
 
-routerForm.post('/form', deleteRecords)
+routerForm.put('/form', deleteRecords)
 
 export default routerForm

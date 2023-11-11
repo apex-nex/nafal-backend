@@ -2,11 +2,12 @@ import { findUser } from "../services/registerServices.js"
 import bcrypt from 'bcrypt'
 
 const loginUser = async (req, res) => {
+    console.log(req.body)
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body.values
 
     const user = await findUser(email)
-    // console.log(user)
+    console.log(user)
 
     console.log(user.length)
 

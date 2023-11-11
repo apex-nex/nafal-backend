@@ -1,10 +1,9 @@
 import { findFormData, formData, deleteForm } from "../services/formServices.js";
 
 const formSubmit = async (req, res) => {
+  console.log("formData", req.body);
   try {
-
-    const { name, email, mobile, subject, comments } = req.body;
-    console.log("formData", req.body);
+    const { name, email, mobile, subject, comments } = req.body?.values;
 
     const status = await formData(name, email, mobile, subject, comments);
 
@@ -15,6 +14,7 @@ const formSubmit = async (req, res) => {
     }
   } catch (error) {
     res.status(500).send("Internal server error")
+    console.log(error)
   }
 };
 
