@@ -26,7 +26,7 @@ const form = async (req, res) => {
     if (formData.length > 0) {
       res.status(200).json({
         count:formData.length, 
-        results: [formData],
+        results: formData,
         next : null,
         previous : null
       })
