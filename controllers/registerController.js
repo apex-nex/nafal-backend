@@ -2,7 +2,8 @@ import { createUser } from '../services/registerServices.js'
 import bcrypt from 'bcrypt'
 
 let registerUser = async (req, res) => {
-    const { name, email, mobile, password, repassword } = req.body
+    try {
+        const { name, email, mobile, password, repassword } = req.body
 
     //add functionality to if req.body get empty values
 
@@ -13,17 +14,17 @@ let registerUser = async (req, res) => {
 
         if (password == repassword) {
             if (status === 'success') {
-                res.send({
-                    name: name,
-                    message: 'Your Registration Is Successful'
-                })
+                res.status(201).json({name: name, message: 'Your Registration Is Successful'})
             } else {
-                res.send('Registration Un Successful')
+                res.status(400).json({error: 'Registration Unsuccessful'})
             }
         } else {
-            res.send('Password and Re Password did not match')
+            res.status(400).json({error: 'Password and Re Password did not match'})
         }
-
     })
+    } catch (error) {
+        res.status(500).send("Internal server error")
+    }
+    
 }
 export { registerUser };
