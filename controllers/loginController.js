@@ -1,12 +1,9 @@
 import { findUser } from "../services/registerServices.js"
 import bcrypt from 'bcrypt'
 
-const loginPage = (req, res) => {
-    res.render('login')
-}
-
 const loginUser = async (req, res) => {
-    const { email, password } = req.body
+    try {
+        const { email, password } = req.body
 
     const user = await findUser(email)
     // console.log(user)
@@ -16,17 +13,18 @@ const loginUser = async (req, res) => {
     if (user.length > 0) {
         let validateUser = await bcrypt.compare(password, user[0].password)
         if (validateUser) {
-            res.send({
-                name: user[0].name,
-                message: 'Login Successful'
-            })
+            res.status(200).json({name: user[0].name, message: 'Login Successful'})
         } else {
-            res.send('wrong email or password')
+            res.status(400).json({error: 'wrong email or password'})
         }
     } else {
-        res.send('user not found try again or register user')
+        res.status(400).json({error: 'user not found try again or register user'})
     }
+    } catch (error) {
+        res.status(500).send("Internal server error")
+    }
+    
 
 }
 
-export { loginPage, loginUser }
+export { loginUser }
