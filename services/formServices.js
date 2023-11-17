@@ -1,19 +1,19 @@
-import formModel from "../models/formModel.js";
+import FormModel from "../models/formModel.js";
 
 const formData = async (name, email, mobile, subject, comments) => {
-  const form = new formModel({ name, email, mobile, subject, comments });
+  const form = new FormModel({ name, email, mobile, subject, comments });
 
   await form.save();
   return "Success"
 }
 
 const findFormData = async () => {
-  const data = await formModel.find()
+  const data = await FormModel.find()
   return data
 }
 
 const deleteForm = async (id) => {
-  const dlt = await formModel.deleteOne(id)
+  const dlt = await FormModel.deleteOne(id)
   return "Success"
 } 
 
