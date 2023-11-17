@@ -5,6 +5,6 @@ const loginSchema = mongoose.Schema({
     password: { type: String },
 })
 
-let loginModel = mongoose.model('loginData', loginSchema, "loginData")
+let LoginModel = mongoose.model('admin', loginSchema)
 
-export default loginModel
+export default LoginModel
