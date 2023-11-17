@@ -1,7 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { registerAdmin } from '../controllers/adminController.js'
-import { loginAdmin } from '../controllers/adminController.js'
+import { registerAdmin, loginAdmin } from '../controllers/adminController.js'
 
 const routerAdmin = express.Router()
 
