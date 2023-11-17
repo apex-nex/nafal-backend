@@ -1,5 +1,5 @@
 import express from 'express'
-import { formSubmit, form, deleteRecords } from '../controllers/formController.js'
+import { formSubmit, form, deleteFormItem  } from '../controllers/formController.js'
 
 const routerForm = express.Router()
 
@@ -10,6 +10,6 @@ routerForm.get('/form', form)
 
 routerForm.post('/form', formSubmit)
 
-routerForm.put('/form', deleteRecords)
+routerForm.delete('/form/items', deleteFormItem)
 
 export default routerForm
