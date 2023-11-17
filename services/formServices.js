@@ -12,9 +12,4 @@ const findFormData = async () => {
   return data
 }
 
-const deleteForm = async (id) => {
-  const dlt = await FormModel.deleteOne(id)
-  return "Success"
-} 
-
-export { formData, findFormData, deleteForm };
+export { formData, findFormData, };
