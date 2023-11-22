@@ -43,13 +43,13 @@ const loginAdmin = async (req, res) => {
             if (validateUser) {
                 res.status(200).json({ name: user[0].name, message: 'Login Successful' })
             } else {
-                res.status(400).json({ error: 'wrong email or password' })
+                res.status(400).json({ error: 'Login failed: Invalid email or password' })
             }
         } else {
             res.status(400).json({ error: 'user not found try again or register user' })
         }
     } catch (error) {
-        res.status(500).send("Internal server error")
+        res.status(500).send("Login failed: Internal server error")
     }
 }
 

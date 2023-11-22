@@ -8,6 +8,6 @@ const formSchema = mongoose.Schema({
   comments: { type: String, required: true },
 });
 
-const FormModel = new mongoose.model("form", formSchema);
+const FormModel = new mongoose.model("Form", formSchema);
 
 export default FormModel;

@@ -5,9 +5,9 @@ const adminSchema = new mongoose.Schema({
     email: { type: String, required: true },
     mobile: { type: Number, required: true },
     password: { type: String, required: true },
-    isAdmin: { type: String, default: false },
+    isAdmin: { type: Boolean, default: false },
 })
 
-const RegisterModel = new mongoose.model("Admin", adminSchema);
+const AdminModel = new mongoose.model("Admin", adminSchema)
 
-export default RegisterModel;
+export default AdminModel
