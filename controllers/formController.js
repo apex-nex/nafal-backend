@@ -70,7 +70,7 @@ const deleteFormItem = async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(500).send({ error: "Error Occured!" });
+    res.status(500).send({ error: "Error Occurred!" });
   }
 };
 
