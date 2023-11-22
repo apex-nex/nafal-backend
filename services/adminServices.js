@@ -1,8 +1,7 @@
-import LoginModel from "../models/loginModel.js"
-import RegisterModel from "../models/adminModal.js"
+import AdminModel from "../models/adminModal.js"
 
 const createUser = async (name, email, mobile, password) => {
-    const user = new RegisterModel({ name: name, email: email, mobile: mobile, password: password })
+    const user = new AdminModel({ name: name, email: email, mobile: mobile, password: password })
 
     await user.save()
 
@@ -10,7 +9,7 @@ const createUser = async (name, email, mobile, password) => {
 }
 
 const findUser = async (userEmail) => {
-    const user = await LoginModel.find({ email: userEmail })
+    const user = await AdminModel.find({ email: userEmail })
     return user
 }
 
