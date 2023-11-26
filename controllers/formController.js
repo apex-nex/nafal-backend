@@ -1,29 +1,25 @@
 import FormModel from "../models/formModel.js";
 import { findFormData, formData } from "../services/formServices.js";
 
-const formSubmit = async (req, res) => {
-  console.log("formData", req.body);
+const formSubmit = async (req, res, next) => {
   try {
     const { name, email, mobile, subject, comments } = req.body?.values;
 
     const status = await formData(name, email, mobile, subject, comments);
 
     if (status === "Success") {
-      res
-        .status(201)
-        .json({ message: "Record Added Successfully!", data: req.body });
+      res.status(201).json({ message: "Record Added Successfully!", data: req.body });
     } else {
-      res
-        .status(400)
-        .json({ error: "Error occur during submitting contact form!" });
+      const error = { status: 400, message: "Error occur during submitting contact form!" }
+      next(error)
     }
-  } catch (error) {
-    res.status(500).send("Internal server error");
-    console.log(error);
+  } catch (err) {
+    const error = { message: "Internal server error" }
+    next(error)
   }
 };
 
-const form = async (req, res) => {
+const form = async (req, res, next) => {
   try {
     const formData = await findFormData();
 
@@ -35,42 +31,44 @@ const form = async (req, res) => {
         previous: null,
       });
     } else {
-      res.status(400).json({ error: "Records not found" });
+      const error = { status: 400, message: "Records not found" }
+      next(error)
     }
-  } catch (error) {
-    res.status(500).send("Internal server error");
+  } catch (err) {
+    const error = { message: "Internal server error" }
+    next(error)
   }
 };
 
-const deleteFormItem = async (req, res) => {
+const deleteFormItem = async (req, res, next) => {
   try {
     const itemIds = req.body;
     if (!Array.isArray(itemIds) || itemIds.length === 0) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Invalid or missing IDs. Please provide an array of IDs in the request body.",
-        });
+      return res.status(400).json({
+        error: "Invalid or missing IDs. Please provide an array of IDs in the request body.",
+      });
     } else {
       if (itemIds.length === 1) {
         const result = await FormModel.findByIdAndRemove(itemIds[0]);
         if (result) {
           res.status(200).json({ massage: "Item deleted successfully" });
         } else {
-          res.status(400).json({ error: "Item not found" });
+          const error = { status: 400, message: "Item not found" }
+          next(error)
         }
       } else {
         const results = await FormModel.deleteMany({ _id: itemIds });
         if (results.deletedCount > 0) {
           res.status(200).json({ massage: "Items deleted successfully" });
         } else {
-          res.status(400).json({ error: "Items not found" });
+          const error = { status: 400, message: "Item not found" }
+          next(error)
         }
       }
     }
-  } catch (error) {
-    res.status(500).send({ error: "Error Occurred!" });
+  } catch (err) {
+    const error = { message: "Internal server error" }
+    next(error)
   }
 };
 
