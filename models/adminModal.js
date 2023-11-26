@@ -1,8 +1,8 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
 
-const adminSchema = new Schema({
+const adminSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
     mobile: { type: Number, required: true },
@@ -51,6 +51,6 @@ adminSchema.methods.generateToken = async function (next) {
     }
 }
 
-const AdminModel = new model("Admin", adminSchema)
+const AdminModel = new mongoose.model("Admin", adminSchema)
 
 export default AdminModel

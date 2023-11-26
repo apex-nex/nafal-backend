@@ -26,9 +26,8 @@ const registerAdmin = async (req, res, next) => {
             next(error)
         }
 
-    } catch (err) {
+    } catch (error) {
         // res.status(500).send("Internal server error")
-        const error = { message: "Internal server error" }
         next(error)
     }
 }
@@ -61,6 +60,7 @@ const loginAdmin = async (req, res, next) => {
 
     } catch (err) {
         const error = { message: "Internal server error" }
+
         next(error)
     }
 }
