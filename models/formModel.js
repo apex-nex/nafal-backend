@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const formSchema = mongoose.Schema({
+const formSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: false },
   mobile: { type: Number, required: true },
@@ -8,6 +8,6 @@ const formSchema = mongoose.Schema({
   comments: { type: String, required: true },
 });
 
-const FormModel = new mongoose.model("Form", formSchema);
+const FormModel = new model("Form", formSchema);
 
 export default FormModel;

@@ -8,13 +8,13 @@ const formSubmit = async (req, res, next) => {
     const status = await formData(name, email, mobile, subject, comments);
 
     if (status === "Success") {
-      res.status(201).json({ message: "Record Added Successfully!", data: req.body });
+      res.status(201).json({ message: "message send Successfully!", data: req.body });
     } else {
-      const error = { status: 400, message: "Error occur during submitting contact form!" }
+      const error = { status: 400, message: "message not delivered!" }
       next(error)
     }
   } catch (err) {
-    const error = { message: "Internal server error" }
+    const error = { response: "Internal server error" }
     next(error)
   }
 };
