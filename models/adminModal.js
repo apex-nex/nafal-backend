@@ -33,7 +33,7 @@ adminSchema.methods.comparePassword = async function (password) {
 }
 
 // json web token
-adminSchema.methods.generateToken = async function () {
+adminSchema.methods.generateToken = async function (next) {
     console.log("this", this)
     try {
         return jwt.sign({
@@ -47,7 +47,7 @@ adminSchema.methods.generateToken = async function () {
             }
         )
     } catch (error) {
-        console.error(error)
+        next(error)
     }
 }
 

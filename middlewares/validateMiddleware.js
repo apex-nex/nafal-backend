@@ -4,9 +4,25 @@ const validate = (schema) => async (req, res, next) => {
         req.body = parseBody
         next()
     } catch (err) {
-        // console.log("err", err)
-        const message = err.errors[0].message
-        res.status(400).json({ msg: message })
+
+        const errorArray = err.errors
+        const transformedErrors = errorArray.reduce((acc, error) => {
+            const key = error.path[0];
+            const value = error.message;
+            acc[key] = value;
+            return acc;
+        }, {});
+
+        const finalOutput = { errors: transformedErrors };
+
+        // res.status(400).json(finalOutput)
+
+        const error = {
+            status: 400,
+            response: finalOutput
+        }
+
+        next(error)
     }
 }
 

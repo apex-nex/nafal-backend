@@ -5,7 +5,7 @@ import AdminModel from '../models/adminModal.js'
 
 // User Registration Logic
 
-const registerAdmin = async (req, res) => {
+const registerAdmin = async (req, res, next) => {
     try {
         const { name, email, mobile, password } = req.body
 
@@ -13,7 +13,8 @@ const registerAdmin = async (req, res) => {
         const adminExist = await AdminModel.findOne({ email })
 
         if (adminExist) {
-            return res.status(400).json({ message: 'Email is already registered Please login' })
+            const error = { status: 400, message: "Email is already registered Please login" }
+            next(error)
         }
 
         let status = await createAdmin(name, email, mobile, password)
@@ -21,24 +22,27 @@ const registerAdmin = async (req, res) => {
         if (status === 'success') {
             res.status(201).json({ name: name, message: 'Your registration was successful.' })
         } else {
-            res.status(400).json({ message: 'Registration was unsuccessful' })
+            const error = { status: 400, message: "Registration was unsuccessful" }
+            next(error)
         }
 
     } catch (error) {
-        res.status(500).send("Internal server error")
+        // res.status(500).send("Internal server error")
+        next(error)
     }
 }
 
 // User Login Logic
 
-const loginAdmin = async (req, res) => {
+const loginAdmin = async (req, res, next) => {
     try {
         const { email, password } = req.body.values
 
         const adminExit = await AdminModel.findOne({ email })
 
         if (!adminExit) {
-            return res.status(400).json({ message: "Login failed: Invalid Credentials" })
+            const error = { status: 400, message: "Login failed: Invalid Credentials" }
+            next(error)
         }
 
         const admin = await adminExit.comparePassword(password)
@@ -50,11 +54,14 @@ const loginAdmin = async (req, res) => {
                 adminId: adminExit._id.toString(),
             })
         } else {
-            return res.status(401).json({ message: "Login failed: Invalid Credentials" })
+            const error = { status: 401, message: "Login failed: Invalid Credentials" }
+            next(error)
         }
 
-    } catch (error) {
-        res.status(500).send("Internal server error")
+    } catch (err) {
+        const error = { message: "Internal server error" }
+
+        next(error)
     }
 }
 
