@@ -10,17 +10,18 @@ const adminSchema = new mongoose.Schema({
 })
 
 // json web token
-adminSchema.methods.generateToken = () => {
+adminSchema.methods.generateToken = async function () {
+    console.log("this", this)
     try {
         return jwt.sign({
             adminId: this._id.toString(),
             email: this.email,
-            isAdmin: this.isAdmin
+            isAdmin: this.isAdmin,
         },
-        process.env.JWT_SECRET_KEY,
-        {
-            expiresIn: "30d"
-        }
+            process.env.JWT_SECRET_KEY,
+            {
+                expiresIn: "30d",
+            }
         )
     } catch (error) {
         console.error(error)

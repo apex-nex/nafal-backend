@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt'
 import { findAdmin } from "../services/adminServices.js"
 import AdminModel from '../models/adminModal.js'
 
+// User Registration Logic
+
 const registerAdmin = async (req, res) => {
     try {
         const { name, email, mobile, password, repassword } = req.body
@@ -26,7 +28,7 @@ const registerAdmin = async (req, res) => {
             }
 
             try {
-                let status =  await createAdmin(name, email, mobile, hash)
+                let status = await createAdmin(name, email, mobile, hash)
 
                 if (password === repassword) {
                     if (status === 'success') {
@@ -46,31 +48,30 @@ const registerAdmin = async (req, res) => {
     }
 }
 
-
+// User Login Logic
 
 const loginAdmin = async (req, res) => {
     try {
         const { email, password } = req.body.values
 
-        const admin = await findAdmin(email)
-        const adminInstance = new AdminModel.findOne({ email });
-        // const adminInstance = new findAdmin(email)
+        const adminExit = await AdminModel.findOne({ email })
 
-        if (admin.length > 0) {
-            let validateAdmin = await bcrypt.compare(password, admin[0].password)
-            if (validateAdmin) {
-                res.status(200).json({ 
-                    name: admin[0].name, 
-                    message: 'Login Successful', 
-                    // token: adminInstance.generateToken(),
-                    // adminID: adminInstance._id.toString(),
-                })
-            } else {
-                res.status(400).json({ error: 'Login failed: Invalid email or password' })
-            }
-        } else {
-            res.status(400).json({ error: 'admin not found try again or register admin' })
+        if (!adminExit) {
+            return res.status(400).json({ message: "Login failed: Invalid Credentials" })
         }
+
+        const admin = await bcrypt.compare(password, adminExit.password)
+
+        if (admin) {
+            res.status(200).json({
+                message: "Login Successful",
+                token: await adminExit.generateToken(),
+                adminId: adminExit._id.toString(),
+            })
+        } else {
+            return res.status(401).json({ message: "Login failed: Invalid Credentials" })
+        }
+
     } catch (error) {
         res.status(500).send("Login failed: Internal server error (code 1)")
     }
