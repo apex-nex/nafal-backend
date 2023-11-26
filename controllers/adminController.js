@@ -1,55 +1,79 @@
-import { createUser } from '../services/adminServices.js'
+import { createAdmin } from '../services/adminServices.js'
 import bcrypt from 'bcrypt'
-import { findUser } from "../services/adminServices.js"
+import { findAdmin } from "../services/adminServices.js"
+import AdminModel from '../models/adminModal.js'
 
-let registerAdmin = async (req, res) => {
+// User Registration Logic
+
+const registerAdmin = async (req, res) => {
     try {
         const { name, email, mobile, password, repassword } = req.body
 
-        //add functionality to if req.body get empty values
+        // Check for empty values in req.body
+        if (!name || !email || !mobile || !password || !repassword) {
+            return res.status(400).json({ error: 'Please provide all required fields' })
+        }
 
+        // Check if email already exists
+        const adminExist = await AdminModel.findOne({ email })
+
+        if (adminExist) {
+            return res.status(400).json({ error: 'Email is already registered Please login' })
+        }
+
+        // bcrypt can be improve
         bcrypt.hash(password, 10, async (err, hash) => {
+            if (err) {
+                return res.status(500).send("Registration failed: Internal server error (Code 1)")
+            }
 
-            // all code in bcrypt.hash can optimized
-            let status = await createUser(name, email, mobile, hash)
+            try {
+                let status = await createAdmin(name, email, mobile, hash)
 
-            if (password == repassword) {
-                if (status === 'success') {
-                    res.status(201).json({ name: name, message: 'Your Registration Is Successful' })
+                if (password === repassword) {
+                    if (status === 'success') {
+                        res.status(201).json({ name: name, message: 'Your registration was successful.' })
+                    } else {
+                        res.status(400).json({ error: 'Registration was unsuccessful' })
+                    }
                 } else {
-                    res.status(400).json({ error: 'Registration Unsuccessful' })
+                    res.status(400).json({ error: 'Password and Re Password did not match' })
                 }
-            } else {
-                res.status(400).json({ error: 'Password and Re Password did not match' })
+            } catch (error) {
+                res.status(500).send("Registration failed: Internal server error (Code 2)")
             }
         })
     } catch (error) {
-        res.status(500).send("Internal server error")
+        res.status(500).send("Registration failed: Internal server error (Code 3)")
     }
 }
 
+// User Login Logic
+
 const loginAdmin = async (req, res) => {
-    console.log(req.body)
     try {
         const { email, password } = req.body.values
 
-        const user = await findUser(email)
-        console.log(user)
+        const adminExit = await AdminModel.findOne({ email })
 
-        console.log(user.length)
-
-        if (user.length > 0) {
-            let validateUser = await bcrypt.compare(password, user[0].password)
-            if (validateUser) {
-                res.status(200).json({ name: user[0].name, message: 'Login Successful' })
-            } else {
-                res.status(400).json({ error: 'Login failed: Invalid email or password' })
-            }
-        } else {
-            res.status(400).json({ error: 'user not found try again or register user' })
+        if (!adminExit) {
+            return res.status(400).json({ message: "Login failed: Invalid Credentials" })
         }
+
+        const admin = await bcrypt.compare(password, adminExit.password)
+
+        if (admin) {
+            res.status(200).json({
+                message: "Login Successful",
+                token: await adminExit.generateToken(),
+                adminId: adminExit._id.toString(),
+            })
+        } else {
+            return res.status(401).json({ message: "Login failed: Invalid Credentials" })
+        }
+
     } catch (error) {
-        res.status(500).send("Login failed: Internal server error")
+        res.status(500).send("Login failed: Internal server error (code 1)")
     }
 }
 

@@ -1,16 +1,16 @@
 import AdminModel from "../models/adminModal.js"
 
-const createUser = async (name, email, mobile, password) => {
-    const user = new AdminModel({ name: name, email: email, mobile: mobile, password: password })
+const createAdmin = async (name, email, mobile, password) => {
+    const admin = new AdminModel({ name: name, email: email, mobile: mobile, password: password })
 
-    await user.save()
+    await admin.save()
 
     return 'success'
 }
 
-const findUser = async (userEmail) => {
-    const user = await AdminModel.find({ email: userEmail })
-    return user
+const findAdmin = async (adminEmail) => {
+    const admin = await AdminModel.find({ email: adminEmail })
+    return admin
 }
 
-export { createUser, findUser }
+export { createAdmin, findAdmin }
