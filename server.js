@@ -20,7 +20,7 @@ app.use('/api/admin', routerAdmin)
 // middleware for contact form
 app.use('/api', routerForm)
 
-// for receive object 
+// for receive json object 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
