@@ -37,7 +37,7 @@ const registerAdmin = async (req, res, next) => {
 
 const loginAdmin = async (req, res, next) => {
     try {
-        const { email, password } = req.body.values
+        const { email, password } = req.body
 
         const adminExit = await AdminModel.findOne({ email })
 
@@ -53,6 +53,7 @@ const loginAdmin = async (req, res, next) => {
                 message: "Login Successful",
                 token: await adminExit.generateToken(),
                 adminId: adminExit._id.toString(),
+                ok: true,
             })
         } else {
             const error = { status: 401, message: "Login failed: Invalid Credentials" }

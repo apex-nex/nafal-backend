@@ -3,12 +3,17 @@ import { findFormData, formData } from "../services/formServices.js";
 
 const formSubmit = async (req, res, next) => {
   try {
-    const { name, email, mobile, subject, comments } = req.body?.values;
+    const { name, email, mobile, subject, comments } = req.body;
 
     const status = await formData(name, email, mobile, subject, comments);
 
     if (status === "Success") {
-      res.status(201).json({ message: "message send Successfully!", data: req.body });
+      res.status(201).json({ 
+        message: "message send Successfully!",
+        ok: true,
+        status: 201,
+        statusText: "Created", 
+      });
     } else {
       const error = { status: 400, message: "message not delivered!" }
       next(error)
