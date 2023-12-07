@@ -27,7 +27,14 @@ app.use(express.urlencoded({ extended: false }))
 // error handling
 app.use(errorMiddleware)
 
+// to active server
+app.get("/corn", (req, res) => {
+    console.log("All Is Well!")
+    res.send("All Is Well!")
+})
+
 // connection and start port
 connectDb(db_url).then(() => {
     app.listen(port, () => console.log(`Server started at: http://localhost:${port}`))
 })
+
