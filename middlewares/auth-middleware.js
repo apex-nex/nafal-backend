@@ -3,13 +3,12 @@ import AdminModel from "../models/adminModal.js"
 
 const authMiddleware = async (req, res, next) => {
     const token = req.header('Authorization')
-    
+
     if (!token) {
         return res.status(401).json({ message: "Unauthorized HTTP, Token not provided" })
     }
-    
+
     const jwtToken = token.replace("Bearer", "").trim()
-    console.log("token", jwtToken)
 
     try {
         const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)
@@ -18,8 +17,6 @@ const authMiddleware = async (req, res, next) => {
             select({
                 password: 0,
             })
-
-        console.log(adminData)
 
         req.body = adminData
         req.token = token
