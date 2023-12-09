@@ -6,7 +6,7 @@ const formSchema = z.object({
         .string({ required_error: "Name is required" })
         .trim()
         .min(3, { message: "Name must be at least of 3 characters." })
-        .max(255, { message: "Name must not be more than 255 characters." }),
+        .max(22, { message: "Name must not be more than 22 characters." }),
     email: z
         .string({ required_error: "Email is required" })
         .trim()
@@ -20,7 +20,7 @@ const formSchema = z.object({
     subject: z
         .string({ required_error: "Subject is required" })
         .min(3, { message: "Subject must be at least of 3 characters." })
-        .max(100, { message: "Subject must not be more than 100 characters." }),
+        .max(60, { message: "Subject must not be more than 60 characters." }),
     comments: z
         .string({ required_error: "Comments is required" })
         .trim()
