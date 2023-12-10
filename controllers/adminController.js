@@ -3,8 +3,7 @@ import bcrypt from 'bcrypt'
 import { findAdmin } from "../services/adminServices.js"
 import AdminModel from '../models/adminModal.js'
 
-// User Registration Logic
-
+// Admin Registration Logic
 const registerAdmin = async (req, res, next) => {
     try {
         const { name, email, mobile, password } = req.body
@@ -33,8 +32,7 @@ const registerAdmin = async (req, res, next) => {
     }
 }
 
-// User Login Logic
-
+// Admin Login Logic
 const loginAdmin = async (req, res, next) => {
     try {
         const { email, password } = req.body
@@ -66,4 +64,14 @@ const loginAdmin = async (req, res, next) => {
     }
 }
 
-export { registerAdmin, loginAdmin };
+// to send Admin data - Admin Logic
+const Admin = async (req, res) => {
+    try {
+        const adminData = req.body
+        res.status(200).json(adminData)
+    } catch (error) {
+        console.log(`Error from the admin route ${error}`)
+    }
+}
+
+export { registerAdmin, loginAdmin, Admin };
