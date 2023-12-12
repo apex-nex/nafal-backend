@@ -13,15 +13,7 @@ const validate = (schema) => async (req, res, next) => {
             return acc;
         }, {});
 
-        const finalOutput = { errors: transformedErrors };
-
-        // res.status(400).json(finalOutput)
-
-        const error = {
-            status: 400,
-            response: finalOutput
-        }
-
+        const error = { status: 400, error: transformedErrors }
         next(error)
     }
 }

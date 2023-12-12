@@ -5,23 +5,24 @@ import { findFormData, formData } from "../services/formServices.js";
 const postForm = async (req, res, next) => {
   try {
     const { name, email, mobile, subject, comments } = req.body;
-
-    const status = await formData(name, email, mobile, subject, comments);
+    const date = new Date();
+    const status = await formData(name, email, mobile, subject, comments, date);
+    console.log("req.body", req.body)
 
     if (status === "Success") {
       res.status(201).json({
-        message: "message send Successfully!",
+        message: "Form recorded successfully!!",
         ok: true,
         status: 201,
         statusText: "Created",
       });
     } else {
-      const error = { status: 400, message: "message not delivered!" }
-      next(error)
+      const error = { status: 400, error: "Oops! Something went wrong. Please try again." };
+      next(error);
     }
   } catch (err) {
-    const error = { response: "Internal server error" }
-    next(error)
+    const error = { status: 500, error: "Internal server error." };
+    next(error);
   }
 };
 
@@ -37,18 +38,16 @@ const getFormData = async (req, res, next) => {
         previous: null,
       });
     } else {
-      const error = { status: 400, message: "Records not found" }
-      next(error)
+      res.status(200).json({ error: "No Records Available" })
     }
   } catch (err) {
-    const error = { message: "Internal server error" }
+    const error = { error: "Internal server error" }
     next(error)
   }
 };
 
 
 const deleteFormItems = async (req, res, next) => {
-  console.log('first', req.body);
 
   try {
     const itemIds = req.body;
@@ -70,9 +69,15 @@ const deleteFormItems = async (req, res, next) => {
       const result = await FormModel.findByIdAndRemove(itemIds[0]);
 
       if (result) {
-        return res.status(200).json({ message: "Item deleted successfully" });
+        return res.status(201).json({
+          message: "Record deleted successfully!!",
+          ok: true,
+          status: 200,
+          statusText: "Deleted",
+          result: itemIds,
+        });
       } else {
-        return next({ status: 400, message: "Item not found" });
+        return next({ status: 400, error: "Item not found" });
       }
     }
 
@@ -81,11 +86,11 @@ const deleteFormItems = async (req, res, next) => {
     if (results.deletedCount > 0) {
       return res.status(200).json({ message: "Items deleted successfully" });
     } else {
-      return next({ status: 400, message: "Items not found" });
+      return next({ status: 400, error: "Items not found" });
     }
 
   } catch (err) {
-    return next({ status: 500, message: "Internal server error" });
+    return next({ status: 500, error: "Internal server error" });
   }
 };
 

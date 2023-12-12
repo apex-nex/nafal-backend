@@ -12,7 +12,7 @@ const registerAdmin = async (req, res, next) => {
         const adminExist = await AdminModel.findOne({ email })
 
         if (adminExist) {
-            const error = { status: 400, message: "Email is already registered Please login" }
+            const error = { status: 400, error: "Email is already registered Please login" }
             next(error)
         }
 
@@ -21,13 +21,13 @@ const registerAdmin = async (req, res, next) => {
         if (status === 'success') {
             res.status(201).json({ name: name, message: 'Your registration was successful.' })
         } else {
-            const error = { status: 400, message: "Registration was unsuccessful" }
+            const error = { status: 400, error: "Registration was unsuccessful" }
             next(error)
         }
 
     } catch (err) {
         // res.status(500).send("Internal server error")
-        const error = { message: "Internal server error" }
+        const error = { error: "Internal server error" }
         next(error)
     }
 }
@@ -40,7 +40,7 @@ const loginAdmin = async (req, res, next) => {
         const adminExit = await AdminModel.findOne({ email })
 
         if (!adminExit) {
-            const error = { status: 400, message: "Login failed: Invalid Credentials" }
+            const error = { status: 400, error: "Login failed: Invalid Credentials" }
             next(error)
         }
 
@@ -54,12 +54,12 @@ const loginAdmin = async (req, res, next) => {
                 ok: true,
             })
         } else {
-            const error = { status: 401, message: "Login failed: Invalid Credentials" }
+            const error = { status: 401, error: "Login failed: Invalid Credentials" }
             next(error)
         }
 
     } catch (err) {
-        const error = { message: "Internal server error" }
+        const error = { error: "Internal server error" }
         next(error)
     }
 }
