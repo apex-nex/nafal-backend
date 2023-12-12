@@ -8,8 +8,7 @@ const routerForm = express.Router()
 routerForm.use(express.urlencoded({ extended: true }))
 routerForm.use(express.json())
 
-// routerForm.route("/form").post(validate(formSchema), postForm)
-routerForm.post('/form', postForm)
+routerForm.route("/form").post(validate(formSchema), postForm)
 
 routerForm.get('/form', getFormData)
 
