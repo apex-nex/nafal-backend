@@ -12,7 +12,7 @@ const formSchema = z.object({
         .trim()
         .email({ message: "Invalid email address" })
         .min(3, { message: "Email must be at least of 3 characters." })
-        .max(255, { message: "Email must not be more than 255 characters." }),
+        .max(50, { message: "Email must not be more than 50 characters." }),
     mobile: z
         .string({ required_error: "Mobile is required" })
         .min(10, { message: "Mobile must be at least of 10 characters." })
