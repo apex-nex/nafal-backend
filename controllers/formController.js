@@ -7,7 +7,6 @@ const postForm = async (req, res, next) => {
     const { name, email, mobile, subject, comments } = req.body;
     const date = new Date();
     const status = await formData(name, email, mobile, subject, comments, date);
-    console.log("req.body", req.body)
 
     if (status === "Success") {
       res.status(201).json({
@@ -46,7 +45,6 @@ const getFormData = async (req, res, next) => {
   }
 };
 
-
 const deleteFormItems = async (req, res, next) => {
 
   try {
@@ -77,7 +75,7 @@ const deleteFormItems = async (req, res, next) => {
           result: itemIds,
         });
       } else {
-        return next({ status: 400, error: "Item not found" });
+        return next({ status: 404, error: "Item not found" });
       }
     }
 
@@ -86,7 +84,7 @@ const deleteFormItems = async (req, res, next) => {
     if (results.deletedCount > 0) {
       return res.status(200).json({ message: "Items deleted successfully" });
     } else {
-      return next({ status: 400, error: "Items not found" });
+      return next({ status: 404, error: "Items not found" });
     }
 
   } catch (err) {
@@ -94,5 +92,45 @@ const deleteFormItems = async (req, res, next) => {
   }
 };
 
+const updateFormStatusById = async (req, res, next) => {
+  const { id, status } = req.body;
 
-export { postForm, getFormData, deleteFormItems };
+  // Check if the payload is empty
+  if (!id || !status) {
+    return next({ status: 404, error: 'Invalid payload. Both id and status are required.' });
+  }
+
+  // Define the allowed status values
+  const allowedStatusValues = ['pending', 'contacted', 'resolved'];
+
+  // Validate if the provided status is valid
+  if (!allowedStatusValues.includes(status)) {
+    return next({ status: 400, error: 'Invalid status value' });
+  }
+
+  try {
+    // Find and update the record by ID
+    const updatedForm = await FormModel.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedForm) {
+      return next({ status: 404, error: 'Form not found' });
+    }
+
+    res.status(200).json({
+      message: "Status updated successfully!!",
+      ok: true,
+      status: 200,
+      statusText: "Updated",
+      result: updatedForm,
+    });
+  } catch (error) {
+    return next({ status: 500, error: 'Internal Server Error' });
+  }
+};
+
+
+export { postForm, getFormData, deleteFormItems, updateFormStatusById };
