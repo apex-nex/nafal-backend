@@ -5,8 +5,7 @@ import { findFormData, formData } from "../services/formServices.js";
 const postForm = async (req, res, next) => {
   try {
     const { name, email, mobile, subject, comments } = req.body;
-    const date = new Date();
-    const status = await formData(name, email, mobile, subject, comments, date);
+    const status = await formData(name, email, mobile, subject, comments);
 
     if (status === "Success") {
       res.status(201).json({
@@ -25,25 +24,63 @@ const postForm = async (req, res, next) => {
   }
 };
 
-const getFormData = async (req, res, next) => {
-  try {
-    const formData = await findFormData();
+const getAllFormData = async (req, res, next) => {
+  const { name, email, mobile, status } = req.query;
+  const queryObject = {};
 
-    if (formData.length > 0) {
-      res.status(200).json({
-        count: formData.length,
-        results: formData,
-        next: null,
-        previous: null,
-      });
-    } else {
-      res.status(200).json({ error: "No Records Available" })
+  if (email) {
+    queryObject.email = { $regex: email };
+  }
+
+  if (mobile) {
+    queryObject.mobile = mobile;
+  }
+
+  if (status) {
+    queryObject.status = { $regex: status };
+  }
+
+  if (name) {
+    queryObject.name = { $regex: name, $options: 'i' };
+  }
+
+  try {
+    const formData = await findFormData(queryObject);
+    let page = Number(req.query.page) || 1;
+    let limit = Number(req.query.limit) || 10;
+    let startIndex = (page - 1) * limit;
+    let endIndex = startIndex + limit;
+
+    const paginatedFormData = formData.slice(startIndex, endIndex);
+
+    // Determine if there are more results
+    const hasMoreResults = endIndex < formData.length;
+
+    // Build next and previous links
+    let nextLink = null;
+    let previousLink = null;
+
+    if (hasMoreResults) {
+      nextLink = `/form?page=${page + 1}&limit=${limit}`;
     }
+
+    if (page > 1) {
+      previousLink = `/form?page=${page - 1}&limit=${limit}`;
+    }
+
+    res.status(200).json({
+      count: formData.length,
+      results: paginatedFormData,
+      next: nextLink,
+      previous: previousLink,
+    });
+
   } catch (err) {
-    const error = { error: "Internal server error" }
-    next(error)
+    const error = { error: "Internal server error" };
+    next(error);
   }
 };
+
 
 const deleteFormItems = async (req, res, next) => {
 
@@ -133,4 +170,4 @@ const updateFormStatusById = async (req, res, next) => {
 };
 
 
-export { postForm, getFormData, deleteFormItems, updateFormStatusById };
+export { postForm, getAllFormData, deleteFormItems, updateFormStatusById };
