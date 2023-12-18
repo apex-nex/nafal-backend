@@ -19,7 +19,6 @@ const postForm = async (req, res, next) => {
       next(error);
     }
   } catch (err) {
-    console.error(err)
     const error = { status: 500, error: "Internal server error." };
     next(error);
   }
@@ -38,29 +37,8 @@ const getAllFormData = async (req, res, next) => {
     ];
   }
 
-  // if (date && date_end) {
-  //   queryObject.createdAt = {
-  //     $gte: new Date(date),
-  //     $lte: new Date(date_end),
-  //   };
-  // }
-
-  // console.log("queryObject", queryObject)
-
   try {
     const formData = await findFormData(queryObject);
-
-
-    // const dateStart = new Date(date); // Specify your start date
-    // const dateEnd = new Date(date_end); // Specify your end date
-    // // console.log("formData", formData)
-
-    // const filteredData = formData.filter(item => {
-    //   const itemDate = new Date(item.date);
-    //   return itemDate >= dateStart && itemDate <= dateEnd;
-    // });
-    // console.log("filteredData", filteredData)
-
 
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -89,11 +67,11 @@ const getAllFormData = async (req, res, next) => {
       results: paginatedFormData,
       next: nextLink,
       previous: previousLink,
+      isFiler: false
     });
 
   } catch (err) {
     const error = { error: "Internal server error" };
-    console.error(err)
     next(error);
   }
 };
@@ -185,5 +163,78 @@ const updateFormStatusById = async (req, res, next) => {
   }
 };
 
+const getFormFilter = async (req, res, next) => {
+  const { date, date_end } = req.query;
 
-export { postForm, getAllFormData, deleteFormItems, updateFormStatusById };
+  let startDate = date
+  let endDate = date_end
+
+  let getFilterType = () => {
+    if (startDate !== '' && endDate !== '') return 'inRange';
+    else if (startDate !== '') return 'greaterThan';
+    else if (startDate !== '') return 'lessThan';
+  };
+
+  try {
+    const formData = await findFormData();
+
+    if (startDate && endDate) {
+      let filtered = [...formData];
+
+      const isStartDateAfterEndDate = startDate !== '' && endDate !== '' && startDate > endDate;
+
+      if (isStartDateAfterEndDate) {
+        const error = { error: "Start Date should be before End Date" };
+        next(error);
+        endDate = '';
+        return;
+      } else {
+        const filterType = getFilterType();
+        if (filterType === 'inRange') {
+          filtered = formData.filter((item) => {
+            const itemDate = new Date(item.date);
+            return itemDate >= new Date(startDate) && itemDate <= new Date(endDate);
+          });
+        }
+      }
+
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 10;
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+
+      const paginatedFormData = filtered.slice(startIndex, endIndex);
+
+      const hasMoreResults = endIndex < filtered.length;
+
+      let nextLink = null;
+      let previousLink = null;
+
+      if (hasMoreResults) {
+        nextLink = `/form/filter?page=${page + 1}&limit=${limit}&date=${startDate}&date_end=${endDate}`;
+      }
+
+      if (page > 1) {
+        previousLink = `/form/filter?page=${page - 1}&limit=${limit}&date=${startDate}&date_end=${endDate}`;
+      }
+
+      res.status(200).json({
+        count: filtered.length,
+        results: paginatedFormData,
+        next: nextLink,
+        previous: previousLink,
+        isFiler: true
+      });
+    } else {
+      const error = { error: "Invalid query parameters" };
+      next(error);
+      return;
+    }
+  } catch (err) {
+    const error = { error: "Internal server error" };
+    next(error);
+  }
+};
+
+
+export { postForm, getAllFormData, deleteFormItems, updateFormStatusById, getFormFilter };

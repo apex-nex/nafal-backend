@@ -1,5 +1,5 @@
 import express from 'express'
-import { postForm, getAllFormData, deleteFormItems, updateFormStatusById } from '../controllers/formController.js'
+import { postForm, getAllFormData, deleteFormItems, updateFormStatusById, getFormFilter } from '../controllers/formController.js'
 import formSchema from '../validators/formValidator.js'
 import validate from '../middlewares/validateMiddleware.js'
 
@@ -15,5 +15,7 @@ routerForm.get('/form', getAllFormData)
 routerForm.delete('/form/items', deleteFormItems)
 
 routerForm.patch('/form/update/status', updateFormStatusById)
+
+routerForm.get('/form/filter', getFormFilter)
 
 export default routerForm
