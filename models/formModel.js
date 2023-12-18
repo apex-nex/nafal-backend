@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const formSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: false },
-  mobile: { type: Number, required: true },
+  mobile: { type: String, required: true },
   subject: { type: String, required: false },
   status: { type: String, default: "pending" },
   comments: { type: String, required: true },
