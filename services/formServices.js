@@ -1,7 +1,7 @@
 import FormModel from "../models/formModel.js";
 
 const formData = async (name, email, mobile, subject, comments) => {
-  const form = new FormModel({ name, email, mobile, subject, comments, date: new Date().toISOString() });
+  const form = new FormModel({ name, email, mobile, subject, comments, date: new Date() });
   await form.save();
   return "Success";
 };
