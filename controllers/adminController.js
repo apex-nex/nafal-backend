@@ -1,13 +1,10 @@
 import { createAdmin } from '../services/adminServices.js'
-import bcrypt from 'bcrypt'
-import { findAdmin } from "../services/adminServices.js"
 import AdminModel from '../models/adminModal.js'
 
 // Admin Registration Logic
-const registerAdmin = async (req, res, next) => {
+const postAdmin = async (req, res, next) => {
     try {
         const { name, email, mobile, password } = req.body
-
         // Check if email already exists
         const adminExist = await AdminModel.findOne({ email })
 
@@ -26,26 +23,22 @@ const registerAdmin = async (req, res, next) => {
         }
 
     } catch (err) {
-        // res.status(500).send("Internal server error")
         const error = { error: "Internal server error" }
         next(error)
     }
 }
 
 // Admin Login Logic
-const loginAdmin = async (req, res, next) => {
+const postLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body
-
         const adminExit = await AdminModel.findOne({ email })
-
         if (!adminExit) {
             const error = { status: 400, error: "Login failed: Invalid Credentials" }
             next(error)
         }
 
         const admin = await adminExit.comparePassword(password)
-
         if (admin) {
             res.status(200).json({
                 message: "Login Successful",
@@ -65,7 +58,7 @@ const loginAdmin = async (req, res, next) => {
 }
 
 // to send Admin data - Admin Logic
-const Admin = async (req, res) => {
+const authAdmin = async (req, res) => {
     try {
         const adminData = req.body
         res.status(200).json(adminData)
@@ -74,4 +67,4 @@ const Admin = async (req, res) => {
     }
 }
 
-export { registerAdmin, loginAdmin, Admin };
+export { postAdmin, postLogin, authAdmin };

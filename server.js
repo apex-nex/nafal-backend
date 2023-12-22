@@ -18,7 +18,7 @@ app.use(cors())
 app.use('/api/admin', routerAdmin)
 
 // middleware for contact form
-app.use('/api', routerForm)
+app.use('/api/form', routerForm)
 
 // for receive json object 
 app.use(express.json())

@@ -1,21 +1,21 @@
 import express from 'express'
-import { postForm, getAllFormData, deleteFormItems, updateFormStatusById, getFormFilter } from '../controllers/formController.js'
+import { postForm, getAllForms, deleteForms, updateFormStatus, getFormFilter } from '../controllers/formController.js'
 import formSchema from '../validators/formValidator.js'
 import validate from '../middlewares/validateMiddleware.js'
 
-const routerForm = express.Router()
+const router = express.Router()
 
-routerForm.use(express.urlencoded({ extended: true }))
-routerForm.use(express.json())
+router.use(express.urlencoded({ extended: true }))
+router.use(express.json())
 
-routerForm.route("/form").post(validate(formSchema), postForm)
+router.route("/").post(validate(formSchema), postForm)
 
-routerForm.get('/form', getAllFormData)
+router.get('/', getAllForms)
 
-routerForm.delete('/form/items', deleteFormItems)
+router.delete('/delete', deleteForms)
 
-routerForm.patch('/form/update/status', updateFormStatusById)
+router.patch('/update', updateFormStatus)
 
-routerForm.get('/form/filter', getFormFilter)
+router.get('/filter', getFormFilter)
 
-export default routerForm
+export default router
