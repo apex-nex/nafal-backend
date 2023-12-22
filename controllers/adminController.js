@@ -4,7 +4,7 @@ import { findAdmin } from "../services/adminServices.js"
 import AdminModel from '../models/adminModal.js'
 
 // Admin Registration Logic
-const registerAdmin = async (req, res, next) => {
+const postAdmin = async (req, res, next) => {
     try {
         const { name, email, mobile, password } = req.body
 
@@ -33,7 +33,7 @@ const registerAdmin = async (req, res, next) => {
 }
 
 // Admin Login Logic
-const loginAdmin = async (req, res, next) => {
+const postLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body
 
@@ -65,7 +65,7 @@ const loginAdmin = async (req, res, next) => {
 }
 
 // to send Admin data - Admin Logic
-const Admin = async (req, res) => {
+const authAdmin = async (req, res) => {
     try {
         const adminData = req.body
         res.status(200).json(adminData)
@@ -74,4 +74,4 @@ const Admin = async (req, res) => {
     }
 }
 
-export { registerAdmin, loginAdmin, Admin };
+export { postAdmin, postLogin, authAdmin };
