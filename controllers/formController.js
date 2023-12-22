@@ -25,7 +25,7 @@ const postForm = async (req, res, next) => {
 };
 
 const getAllForms = async (req, res, next) => {
-  const { search, date, date_end } = req.query;
+  const { search } = req.query;
   const queryObject = {};
 
   if (search) {
