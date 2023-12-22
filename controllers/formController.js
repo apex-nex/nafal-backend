@@ -24,8 +24,8 @@ const postForm = async (req, res, next) => {
   }
 };
 
-const getAllFormData = async (req, res, next) => {
-  const { search, date, date_end } = req.query;
+const getAllForms = async (req, res, next) => {
+  const { search } = req.query;
   const queryObject = {};
 
   if (search) {
@@ -76,7 +76,7 @@ const getAllFormData = async (req, res, next) => {
   }
 };
 
-const deleteFormItems = async (req, res, next) => {
+const deleteForms = async (req, res, next) => {
 
   try {
     const itemIds = req.body;
@@ -123,7 +123,7 @@ const deleteFormItems = async (req, res, next) => {
   }
 };
 
-const updateFormStatusById = async (req, res, next) => {
+const updateFormStatus = async (req, res, next) => {
   const { id, status } = req.body;
 
   // Check if the payload is empty
@@ -237,4 +237,4 @@ const getFormFilter = async (req, res, next) => {
 };
 
 
-export { postForm, getAllFormData, deleteFormItems, updateFormStatusById, getFormFilter };
+export { postForm, getAllForms, deleteForms, updateFormStatus, getFormFilter };

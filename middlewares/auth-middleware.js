@@ -23,8 +23,9 @@ const authMiddleware = async (req, res, next) => {
         req.userID = adminData._id
 
         next()
-    } catch (error) {
-        return res.status(401).json({ message: "Unauthorized invalid token." })
+    } catch (err) {
+        const error = { status: 401, error: "Unauthorized invalid token." }
+        next(error)
     }
 
 }

@@ -34,7 +34,6 @@ adminSchema.methods.comparePassword = async function (password) {
 
 // json web token
 adminSchema.methods.generateToken = async function (next) {
-    console.log("this", this)
     try {
         return jwt.sign({
             adminId: this._id.toString(),
