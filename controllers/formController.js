@@ -126,8 +126,6 @@ const deleteForms = async (req, res, next) => {
 const updateFormStatus = async (req, res, next) => {
   const { id, status } = req.body;
 
-  console.log("req.body", req.body)
-
   // Check if the payload is empty
   if (!id || !status) {
     return next({ status: 404, error: 'Invalid payload. Both id and status are required.' });
