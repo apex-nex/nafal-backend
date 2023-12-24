@@ -33,6 +33,7 @@ const postLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body
         const adminExit = await AdminModel.findOne({ email })
+        
         if (!adminExit) {
             const error = { status: 400, error: "Login failed: Invalid Credentials" }
             next(error)
