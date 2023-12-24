@@ -38,7 +38,7 @@ const getAllForms = async (req, res, next) => {
   }
 
   try {
-    const formData = await findFormData(queryObject);
+    const formData = await findFormData(queryObject); 
 
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
