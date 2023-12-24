@@ -4,7 +4,7 @@ const validate = (schema) => async (req, res, next) => {
         req.body = parseBody
         next()
     } catch (err) {
- 
+
         const errorArray = err.errors
         const transformedErrors = errorArray.reduce((acc, error) => {
             const key = error.path[0];
