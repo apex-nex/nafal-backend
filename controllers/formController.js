@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import FormModel from "../models/formModel.js";
 import { findFormData, formData } from "../services/formServices.js";
 
@@ -38,10 +38,10 @@ const getAllForms = async (req, res, next) => {
   }
 
   try {
-    const formData = await findFormData(queryObject); 
+    const formData = await findFormData(queryObject);
 
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
+    const limit = Number(req.query.limit) || 15;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
 
@@ -140,25 +140,28 @@ const updateFormStatus = async (req, res, next) => {
   }
 
   try {
+    const objectId = new mongoose.Types.ObjectId(id);
+
     // Find and update the record by ID
     const updatedForm = await FormModel.findByIdAndUpdate(
-      id,
+      objectId,
       { status },
       { new: true }
     );
 
     if (!updatedForm) {
-      return next({ status: 404, error: 'Form not found' });
+      return next({ status: 404, error: 'Record not found' });
     }
 
     res.status(200).json({
-      message: "Status updated successfully!!",
       ok: true,
+      message: "Status updated successfully!!",
       status: 200,
       statusText: "Updated",
       result: updatedForm,
     });
   } catch (error) {
+    console.error(error);
     return next({ status: 500, error: 'Internal Server Error' });
   }
 };
@@ -199,7 +202,7 @@ const getFormFilter = async (req, res, next) => {
       }
 
       const page = Number(req.query.page) || 1;
-      const limit = Number(req.query.limit) || 10;
+      const limit = Number(req.query.limit) || 15;
       const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
 
