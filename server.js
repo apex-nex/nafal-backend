@@ -11,15 +11,7 @@ const app = express()
 const port = process.env.PORT || 9000;
 const db_url = process.env.DB_URL
 
-// Force browser redirect - Use 302 redirect (browser follows automatically)
-app.use((req, res) => {
-  const redirectUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-
-  // 302 redirect - some browsers will follow this even for fetch requests
-  res.redirect(302, redirectUrl);
-});
-
-// setup cors (won't be reached due to redirect above)
+// setup cors
 app.use(cors())
 
 // middleware for register admin

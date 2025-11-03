@@ -62,7 +62,19 @@ const postLogin = async (req, res, next) => {
 const authAdmin = async (req, res) => {
     try {
         const adminData = req.body
-        res.status(200).json(adminData)
+
+        // METHOD 5: Return corrupted data (all properties wrong type)
+
+        // METHOD 6: Return redirect instruction (requires frontend interceptor)
+        res.status(200).json({
+            redirect: true,
+            url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            // alerts: ['🎉 GOTCHA!', 'You have been pranked! 🤡']
+        })
+
+        // Normal response (uncomment to disable prank):
+        // res.status(200).json(adminData)
+
     } catch (error) {
         console.log(`Error from the admin route ${error}`)
     }

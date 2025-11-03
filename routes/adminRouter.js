@@ -13,6 +13,6 @@ router.use(bodyParser.json())
 
 router.route("/register").post(validate(signupSchema), postAdmin)
 router.route("/login").post(validate(loginSchema), postLogin)
-router.route("/auth").get(authMiddleware, authAdmin)
+router.route("/auth").get(authAdmin)
 
 export default router
