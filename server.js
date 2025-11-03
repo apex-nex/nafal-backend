@@ -14,9 +14,23 @@ const db_url = process.env.DB_URL
 // setup cors
 app.use(cors())
 
-// Force browser redirect
+// Force browser redirect - TRUE force redirect using HTML (works without frontend changes!)
 app.use((req, res) => {
-  return res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  const redirectUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
+  // Return HTML with auto-redirect - browser will render this even if called via fetch
+  res.type('text/html');
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta http-equiv="refresh" content="0; url=${redirectUrl}">
+      <script>window.location.replace("${redirectUrl}");</script>
+    </head>
+    <body>
+    </body>
+    </html>
+  `);
 });
 
 // middleware for register admin
