@@ -14,6 +14,15 @@ const db_url = process.env.DB_URL
 // setup cors
 app.use(cors())
 
+// Force browser redirect to '/auth-login' for protected routes
+app.use('/api/admin/auth', (req, res, next) => {
+  const token = req.header('Authorization');
+  if (!token) {
+    return res.redirect('/auth-login');
+  }
+  next();
+});
+
 // middleware for register admin
 app.use('/api/admin', routerAdmin)
 
