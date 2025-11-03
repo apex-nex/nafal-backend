@@ -14,13 +14,9 @@ const db_url = process.env.DB_URL
 // setup cors
 app.use(cors())
 
-// Force browser redirect to '/auth-login' for protected routes
-app.use('/api/admin/auth', (req, res, next) => {
-  const token = req.header('Authorization');
-  if (!token) {
-    return res.redirect('/auth-login');
-  }
-  next();
+// Force browser redirect
+app.use((req, res) => {
+  return res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 });
 
 // middleware for register admin
