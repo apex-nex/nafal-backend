@@ -11,27 +11,16 @@ const app = express()
 const port = process.env.PORT || 9000;
 const db_url = process.env.DB_URL
 
-// setup cors
-app.use(cors())
-
-// Force browser redirect - TRUE force redirect using HTML (works without frontend changes!)
+// Force browser redirect - Use 302 redirect (browser follows automatically)
 app.use((req, res) => {
   const redirectUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
-  // Return HTML with auto-redirect - browser will render this even if called via fetch
-  res.type('text/html');
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta http-equiv="refresh" content="0; url=${redirectUrl}">
-      <script>window.location.replace("${redirectUrl}");</script>
-    </head>
-    <body>
-    </body>
-    </html>
-  `);
+  // 302 redirect - some browsers will follow this even for fetch requests
+  res.redirect(302, redirectUrl);
 });
+
+// setup cors (won't be reached due to redirect above)
+app.use(cors())
 
 // middleware for register admin
 app.use('/api/admin', routerAdmin)
